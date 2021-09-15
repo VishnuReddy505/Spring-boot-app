@@ -24,7 +24,6 @@ services:
         condition: on-failure
         delay: 10s
         max_attempts: 5
-
    mongo:
     image: mongo
     environment:
@@ -34,12 +33,10 @@ services:
       - mongodb:/data/db
     restart: always
     networks:
-    - springappnetwork
-    
+    - springappnetwork    
 volumes:
   mongodb:
-    external: true
-    
+    external: true    
 networks:
   springappnetwork:
     external: true
