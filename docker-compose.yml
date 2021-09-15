@@ -23,7 +23,6 @@ services:
       restart_policy:
         condition: on-failure
         delay: 10s
-     
    mongo:
     image: mongo
     environment:
