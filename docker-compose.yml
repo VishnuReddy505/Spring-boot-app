@@ -25,7 +25,7 @@ services:
         delay: 10s
         max_attempts: 5
 
-  mongo:
+   mongo:
     image: mongo
     environment:
     - MONGO_INITDB_ROOT_USERNAME=devdb
@@ -35,6 +35,14 @@ services:
     restart: always
     networks:
     - springappnetwork
+    
+volumes:
+  mongodb:
+    external: true
+    
+networks:
+  springappnetwork:
+    external: true
     
     
  
