@@ -32,7 +32,7 @@ services:
     networks: 
       - springappnetwork
     ports: 
-      - "8080:8080"
+      - "8555:8080"
     restart: always
     working_dir: /opt/app
 version: "3.1"
