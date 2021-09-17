@@ -1,43 +1,43 @@
-version: '3.1'
-
-services:
-  springboot:
-    image: dockerlegendroy/spring-boot-mongo:latest
-    restart: always # This will be ignored if we deploy in docker swarm
-    environment:
-    - MONGO_DB_HOSTNAME=mongo
-    - MONGO_DB_USERNAME=devdb
-    - MONGO_DB_PASSWORD=devdb123
-    ports:
-      - 8777:8080
-    working_dir: /opt/app
-    depends_on:
+networks: 
+  springappnetwork: 
+    external: true
+services: 
+  mongo: 
+    environment: 
+      - MONGO_INITDB_ROOT_USERNAME=devdb
+      - MONGO_INITDB_ROOT_PASSWORD=devdb123
+    image: mongo
+    networks: 
+      - springappnetwork
+    restart: always
+    volumes: 
+      - "mongodb:/data/db"
+  springboot: 
+    depends_on: 
       - mongo
-    networks:
-    - springappnetwork  
-    deploy:  # This will be considered only in docker swarm.
+    deploy: 
       replicas: 2
-      update_config:
-        parallelism: 1
-        delay: 20s
-      restart_policy:
+      restart_policy: 
         condition: on-failure
         delay: 10s
-   mongo:
-    image: mongo
-    environment:
-    - MONGO_INITDB_ROOT_USERNAME=devdb
-    - MONGO_INITDB_ROOT_PASSWORD=devdb123
-    volumes:
-      - mongodb:/data/db
+        max_attempts: 5
+      update_config: 
+        delay: 20s
+        parallelism: 1
+    environment: 
+      - MONGO_DB_HOSTNAME=mongo
+      - MONGO_DB_USERNAME=devdb
+      - MONGO_DB_PASSWORD=devdb123
+    image: "dockerlegendroy/spring-boot-mongo:latest"
+    networks: 
+      - springappnetwork
+    ports: 
+      - "8080:8080"
     restart: always
-    networks:
-    - springappnetwork    
-volumes:
-  mongodb:
-    external: true   
-networks:
-  springappnetwork:
+    working_dir: /opt/app
+version: "3.1"
+volumes: 
+  mongodb: 
     external: true
     
     
